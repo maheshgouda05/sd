@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-light: #fbf7ff;
+      --bg-accent: #f2e6ff;
+      --text: #151515;
+      --muted: #6b6b7d;
+      --border: #ebebf3;
+      --shadow: 0 30px 60px rgba(20, 20, 50, 0.08);
+      --purple: #8b5cf6;
+      --yellow: #fbbf24;
+      --orange: #fb7185;
+      --black: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(180deg, #ffffff 0%, #f8f7ff 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1120px;
+      min-height: 720px;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #fff;
+      animation: fadeIn 0.9s ease forwards;
+    }
+
+    .hero,
+    .login-panel {
+      flex: 1;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fdf7ff 0%, #faf3ff 52%, #f8f1ff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.14), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(251, 190, 36, 0.16), transparent 28%);
+      pointer-events: none;
+    }
+
+    .illustration {
+      position: relative;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      gap: 18px;
+      z-index: 1;
+    }
+
+    .shape {
+      position: relative;
+      width: 120px;
+      height: 140px;
+      border-radius: 40% 50% 45% 50%;
+      box-shadow: 0 28px 45px rgba(95, 27, 205, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 16px 30px rgba(99, 50, 215, 0.12));
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) {
+      background: linear-gradient(145deg, #7c3aed 0%, #f9a8d4 100%);
+      width: 132px;
+      height: 150px;
+      transform: translateX(-32px);
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      background: linear-gradient(150deg, #fde68a 0%, #fb923c 100%);
+      width: 112px;
+      height: 124px;
+      border-radius: 50% 40% 55% 45%;
+      transform: translate(48px, -24px);
+      animation-delay: 0.6s;
+    }
+
+    .shape:nth-child(3) {
+      background: linear-gradient(160deg, #101010 0%, #3f3f46 100%);
+      width: 96px;
+      height: 110px;
+      border-radius: 40% 40% 55% 55%;
+      transform: translate(-16px, 38px);
+      animation-delay: 1.2s;
+    }
+
+    .shape:nth-child(4) {
+      background: linear-gradient(135deg, #fb7185 0%, #fcd34d 100%);
+      width: 76px;
+      height: 92px;
+      transform: translate(62px, 56px);
+      animation-delay: 1.8s;
+    }
+
+    .shape::before,
+    .shape::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      top: 40%;
+      box-shadow: 28px 0 0 #fff;
+    }
+
+    .shape::after {
+      width: 36px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.56);
+      border-radius: 999px;
+      top: 68%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .login-panel {
+      background: #ffffff;
+      padding: 56px 48px;
+    }
+
+    .login-panel h1 {
+      margin: 0;
+      font-size: clamp(2rem, 2.4vw, 2.75rem);
+      letter-spacing: -0.04em;
+    }
+
+    .login-panel p.subtitle {
+      margin: 16px 0 32px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .form-group input {
+      width: 100%;
+      border: none;
+      border-bottom: 1.5px solid #e8e8f6;
+      padding: 12px 0;
+      font-size: 1rem;
+      color: var(--text);
+      background: transparent;
+      outline: none;
+      transition: border-color 0.25s ease;
+    }
+
+    .form-group input:focus {
+      border-color: var(--black);
+    }
+
+    .password-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .password-field button {
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease;
+    }
+
+    .password-field button:hover {
+      color: var(--black);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .checkbox-group input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--black);
+      border-radius: 4px;
+    }
+
+    .forgot-link {
+      color: var(--black);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .button-group {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.22s ease, box-shadow 0.22s ease,
+        background-color 0.22s ease, color 0.22s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 30px rgba(22, 22, 52, 0.12);
+    }
+
+    .btn-primary {
+      background: #111111;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border-color: #e8e8f2;
+      box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.05);
+    }
+
+    .btn-secondary svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .footer-text {
+      margin-top: auto;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .footer-text a {
+      text-decoration: none;
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #e11d48;
+      font-size: 0.92rem;
+      margin-top: -8px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0);
+      }
+      50% {
+        transform: translateY(-16px) rotate(1deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        min-height: auto;
+      }
+
+      .hero,
+      .login-panel {
+        padding: 36px 24px;
+      }
+
+      .hero {
+        min-height: 320px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px;
+      }
+
+      .container {
+        border-radius: 24px;
+      }
+
+      .login-panel {
+        padding: 28px 20px 24px;
+      }
+
+      .hero {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="illustration" aria-hidden="true">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+      </div>
+    </section>
+
+    <section class="login-panel">
+      <h1>Welcome back!</h1>
+      <p class="subtitle">Please enter your details</p>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="you@example.com" required />
+          <div class="error-message" id="emailError">Please enter a valid email.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              minlength="6"
+              required
+            />
+            <button type="button" id="togglePassword" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <div class="error-message" id="passwordError">Password must be at least 6 characters.</div>
+        </div>
+
+        <div class="actions">
+          <label class="checkbox-group">
+            <input type="checkbox" id="remember" name="remember" />
+            Remember for 30 days
+          </label>
+          <a class="forgot-link" href="#">Forgot password?</a>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-primary" type="submit">Log in</button>
+          <button class="btn btn-secondary" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.35 11.1c0-.77-.07-1.35-.22-1.94H12v3.68h5.7c-.24 1.34-.98 2.32-2.1 3.05v2.53h3.4c1.98-1.83 3.13-4.52 3.13-7.32z"/>
+              <path d="M12 22c2.84 0 5.23-.93 6.98-2.52l-3.4-2.53c-.95.64-2.16 1.02-3.58 1.02-2.75 0-5.08-1.86-5.92-4.37H2.54v2.74C4.29 19.98 7.87 22 12 22z"/>
+              <path d="M6.08 13.6A5.99 5.99 0 0 1 6 12c0-.55.09-1.09.25-1.6V7.66H2.54A9.98 9.98 0 0 0 1 12c0 1.61.39 3.13 1.08 4.47l3-2.87z"/>
+              <path d="M12 6.5c1.55 0 2.95.53 4.05 1.56l3.03-3.03C17.2 3.4 14.74 2.5 12 2.5 7.87 2.5 4.29 4.52 2.54 7.26l3.71 2.74C6.92 8.36 9.25 6.5 12 6.5z"/>
+            </svg>
+            Log in with Google
+          </button>
+        </div>
+
+        <p class="footer-text">
+          Don’t have an account?
+          <a href="#">Sign up</a>
+        </p>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.type === "password" ? "text" : "password";
+      passwordInput.type = type;
+      togglePassword.innerHTML = type === "password"
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.03 10.03 0 0 1 12 20c-7 0-11-8-11-8a18.19 18.19 0 0 1 4.25-5.12"/><path d="M1 1l22 22"/><path d="M9.88 9.88a3 3 0 0 0 4.24 4.24"/><path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"/><path d="M16.72 16.72A9.94 9.94 0 0 0 21 12s-4-8-9-8a9.72 9.72 0 0 0-5 .13"/></svg>`;
+    });
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      let valid = true;
+
+      if (!emailInput.checkValidity()) {
+        emailError.style.display = "block";
+        valid = false;
+      } else {
+        emailError.style.display = "none";
+      }
+
+      if (!passwordInput.checkValidity()) {
+        passwordError.style.display = "block";
+        valid = false;
+      } else {
+        passwordError.style.display = "none";
+      }
+
+      if (valid) {
+        alert("Login successful!");
+        loginForm.reset();
+      }
+    });
+
+    emailInput.addEventListener("input", () => {
+      emailError.style.display = emailInput.checkValidity() ? "none" : "block";
+    });
+
+    passwordInput.addEventListener("input", () => {
+      passwordError.style.display = passwordInput.checkValidity() ? "none" : "block";
+    });
+  </script>
+</body>
+</html>
