@@ -27,7 +27,6 @@
       --text-main: #ffffff;
       --text-muted: #94a3b8;
 
-      /* Robotic customizable variables */
       --neon-visor: #06b6d4;
       --neon-eyes: #22d3ee;
       --neon-core: #06b6d4;
@@ -54,7 +53,6 @@
       position: relative;
     }
 
-    /* Constellation background */
     #particleCanvas {
       position: absolute;
       inset: 0;
@@ -64,7 +62,6 @@
       z-index: 0;
     }
 
-    /* Interactive Confetti Canvas */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -74,7 +71,6 @@
       z-index: 9999;
     }
 
-    /* Success sliding banner */
     .success-banner {
       position: absolute;
       top: -80px;
@@ -104,7 +100,6 @@
       flex-shrink: 0;
     }
 
-    /* Portal Card Layout */
     .portal-card {
       display: flex;
       flex-direction: column;
@@ -124,7 +119,6 @@
       z-index: 1;
     }
 
-    /* Transition layout to Split layout on desktop */
     .portal-card.split-layout {
       max-width: 900px;
       flex-direction: row;
@@ -151,7 +145,6 @@
       width: 100%;
     }
 
-    /* Robot Container Floating */
     .robot-wrapper {
       width: 240px;
       height: 270px;
@@ -160,7 +153,6 @@
       animation: robot-float 4s ease-in-out infinite;
     }
 
-    /* SCREEN TRANSITION STYLING */
     .screen {
       display: none;
       opacity: 0;
@@ -174,7 +166,6 @@
       transform: translateY(0);
     }
 
-    /* Dialogue container box */
     .dialogue-box {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -197,7 +188,6 @@
       text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
     }
 
-    /* Title structures inside forms */
     .form-title {
       font-size: 1.85rem;
       font-weight: 700;
@@ -215,7 +205,6 @@
       margin-bottom: 24px;
     }
 
-    /* Forms components */
     .form-group {
       position: relative;
       margin-bottom: 20px;
@@ -323,7 +312,6 @@
       flex-shrink: 0;
     }
 
-    /* Tech Status logs panel inside forms screen */
     .status-panel {
       background: rgba(239, 68, 68, 0.05);
       border: 1px dashed rgba(239, 68, 68, 0.25);
@@ -343,7 +331,6 @@
       to { box-shadow: 0 0 15px rgba(239, 68, 68, 0.15); }
     }
 
-    /* NEON GLOWING BUTTONS */
     .cyber-btn {
       display: inline-flex;
       align-items: center;
@@ -389,7 +376,6 @@
       left: 100%;
     }
 
-    /* Next trigger button fade-in show */
     .next-trigger {
       opacity: 0;
       transform: translateY(8px);
@@ -402,7 +388,6 @@
       pointer-events: auto;
     }
 
-    /* Conversational Name input box */
     .name-input-container {
       opacity: 0;
       transform: translateY(8px);
@@ -429,27 +414,21 @@
       animation: shake-x 0.3s ease-in-out;
     }
 
-    /* --- ROBOT COMPONENT ANIMATIONS & SHADING --- */
-
-    /* Generic transition for smooth state morphing */
     .ear-left, .ear-right, .eyebrow-left, .eyebrow-right, .eyelid, .pupil, .head, .tail, .arm, .antenna-light, .thruster-fire {
       transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* Visor and core variable mappings */
     #visorPlate { stroke: var(--neon-visor); transition: stroke 0.4s ease; }
     #mouthWave { stroke: var(--neon-eyes); transition: stroke 0.4s ease; }
     #eyeLeft, #eyeRight { fill: var(--neon-eyes); transition: fill 0.4s ease; }
     #chestCore { fill: var(--neon-core); transition: fill 0.4s ease; }
     .antenna-light { fill: var(--neon-eyes); transition: fill 0.4s ease; }
 
-    /* Idle Float animation */
     @keyframes robot-float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-12px); }
     }
 
-    /* visors wiggling speak Y scale */
     @keyframes mouth-talking {
       0%, 100% { transform: scaleY(0.4); }
       50% { transform: scaleY(2.2); }
@@ -459,7 +438,6 @@
       transform-origin: 200px 148px;
     }
 
-    /* Head speak wiggles */
     @keyframes head-speaking {
       0%, 100% { transform: rotate(0deg) translateY(0); }
       50% { transform: rotate(-1deg) translateY(-1px); }
@@ -468,7 +446,6 @@
       animation: head-speaking 0.24s infinite ease-in-out;
     }
 
-    /* Hand speak gesture wiggles */
     @keyframes hand-speaking-left {
       0%, 100% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-4px) rotate(-3deg); }
@@ -478,7 +455,6 @@
       transform-origin: 140px 235px;
     }
 
-    /* Core breathing pulse */
     @keyframes core-pulse {
       0%, 100% { transform: scale(1); opacity: 0.8; }
       50% { transform: scale(1.15); opacity: 1; }
@@ -488,7 +464,6 @@
       transform-origin: 200px 280px;
     }
 
-    /* Jet fire engine wiggles */
     @keyframes thruster-flame {
       0%, 100% { transform: scaleY(1); opacity: 0.8; }
       50% { transform: scaleY(1.3) scaleX(0.95); opacity: 1; }
@@ -498,7 +473,6 @@
       transform-origin: 200px 370px;
     }
 
-    /* visors blink */
     @keyframes robot-blink {
       0%, 90%, 94%, 100% { transform: scaleY(1); }
       92%, 96% { transform: scaleY(0.05); }
@@ -508,7 +482,6 @@
       transform-origin: 200px 140px;
     }
 
-    /* Spinning holographic rings */
     .holo-ring-1 {
       transform-origin: 200px 380px;
       animation: spin-ring 9s infinite linear;
@@ -526,9 +499,6 @@
       to { transform: rotate(0deg); }
     }
 
-    /* --- STATE-SPECIFIC CLASS MODIFIERS --- */
-
-    /* 1. Alert/Failure state (Red eyes, vibration alert) */
     .robot.alert {
       --neon-visor: #ef4444;
       --neon-eyes: #f87171;
@@ -546,7 +516,6 @@
       transform-origin: bottom center;
     }
 
-    /* 2. Success/Happy state (Green eyes, jumping waving paw) */
     .robot.happy {
       --neon-visor: #10b981;
       --neon-eyes: #34d399;
@@ -574,17 +543,15 @@
       transform-origin: bottom center;
     }
 
-    /* 3. Typing eye focus (inspecting text) */
     .robot.focusing-form #catHead {
       transform: rotate(5deg) translate(3px, 1px) !important;
     }
     .robot.focusing-form #eyeLeft, 
     .robot.focusing-form #eyeRight {
       transform: translate(6px, 0px) !important;
-      animation: none !important; /* freeze blinking */
+      animation: none !important; 
     }
 
-    /* --- RESPONSIVE SPLIT STYLING --- */
     @media (max-width: 850px) {
       body {
         padding: 16px;
@@ -617,15 +584,14 @@
   </style>
 </head>
 <body>
-  <!-- Futuristic Constellation Backdrop -->
+  
   <canvas id="particleCanvas"></canvas>
-  <!-- Fullscreen celebration confetti -->
+  
   <canvas id="confettiCanvas"></canvas>
 
-  <!-- Success Notification overlay -->
   <div class="success-banner" id="successBanner">
     <div class="success-content">
-      <!-- SVG checkmark -->
+      
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
@@ -634,12 +600,12 @@
   </div>
 
   <main class="portal-card" id="portalCard">
-    <!-- Left panel (Robot view) -->
+    
     <section class="robot-section">
       <div class="robot-wrapper" id="robotWrapper">
         <svg class="cat" id="catSvg" viewBox="0 0 400 450">
           <defs>
-            <!-- Shadow filter layer -->
+            
             <filter id="shadow3D" x="-10%" y="-10%" width="120%" height="120%">
               <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#020617" flood-opacity="0.35" />
             </filter>
@@ -647,7 +613,6 @@
               <feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#020617" flood-opacity="0.45" />
             </filter>
 
-            <!-- Radial 3D styled metallic shaders -->
             <radialGradient id="metallic3D" cx="30%" cy="30%" r="70%">
               <stop offset="0%" stop-color="#475569" />
               <stop offset="60%" stop-color="#1e293b" />
@@ -673,72 +638,57 @@
             </radialGradient>
           </defs>
 
-          <!-- Shadow underneath -->
           <ellipse cx="200" cy="430" rx="70" ry="10" fill="rgba(6, 182, 212, 0.15)" filter="blur(5px)" />
 
           <g id="catInner">
-            <!-- Holographic concentric rings -->
+            
             <ellipse cx="200" cy="380" rx="60" ry="16" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="18,10" opacity="0.38" class="holo-ring-1" />
             <ellipse cx="200" cy="380" rx="75" ry="20" fill="none" stroke="#0891b2" stroke-width="1" stroke-dasharray="8,15" opacity="0.3" class="holo-ring-2" />
 
-            <!-- Jet Flame -->
             <path id="thrusterFire" class="thruster-fire" d="M 188 360 Q 200 410 212 360 Z" fill="url(#fireGlow)" />
 
-            <!-- Booster Cone -->
             <polygon points="180,340 220,340 205,362 195,362" fill="url(#metalGlow)" stroke="#0e1726" stroke-width="2" filter="url(#shadow3D)" />
 
-            <!-- Torso Body Plate -->
             <path id="chest" d="M 150 225 L 250 225 C 270 265, 262 315, 240 340 L 160 340 C 138 315, 130 265, 150 225 Z" fill="url(#metallic3D)" stroke="#0e1726" stroke-width="2.5" filter="url(#shadow3D)" />
 
-            <!-- Torso Details -->
             <circle cx="200" cy="282" r="23" fill="#090d16" stroke="rgba(255,255,255,0.05)" stroke-width="2.5" />
-            <!-- Core pulse reactor -->
+            
             <circle id="chestCore" cx="200" cy="282" r="15" fill="url(#coreGlow)" />
-            <!-- Body Tech Plates lines -->
+            
             <line x1="162" y1="245" x2="190" y2="245" stroke="#0f172a" stroke-width="2" stroke-linecap="round" />
             <line x1="210" y1="245" x2="238" y2="245" stroke="#0f172a" stroke-width="2" stroke-linecap="round" />
 
-            <!-- Left Segmented Arm -->
             <path id="armLeft" class="arm" d="M 140 235 C 110 250, 102 285, 112 315" stroke="url(#metallic3D)" stroke-width="15" stroke-linecap="round" fill="none" filter="url(#shadow3D)" />
             <circle cx="112" cy="326" r="8" fill="url(#metalGlow)" stroke="#0e1726" />
 
-            <!-- Right Segmented Arm -->
             <path id="armRight" class="arm" d="M 260 235 C 290 250, 298 285, 288 315" stroke="url(#metallic3D)" stroke-width="15" stroke-linecap="round" fill="none" filter="url(#shadow3D)" />
             <circle cx="288" cy="326" r="8" fill="url(#metalGlow)" stroke="#0e1726" />
 
-            <!-- Right Waving Arm (Happy state) -->
             <g id="armRightWave" style="display: none; transform-origin: 260px 235px;">
               <path d="M 260 235 C 290 210, 310 168, 300 148" stroke="url(#metallic3D)" stroke-width="15" stroke-linecap="round" fill="none" />
               <circle cx="300" cy="138" r="8" fill="url(#metalGlow)" stroke="#0e1726" />
-              <!-- Small wave indicator -->
+              
               <circle cx="300" cy="138" r="4" fill="#22d3ee" opacity="0.8" />
             </g>
 
-            <!-- Neck Rings -->
             <ellipse cx="200" cy="206" rx="25" ry="7" fill="url(#metalGlow)" stroke="#0e1726" stroke-width="1.5" />
             <ellipse cx="200" cy="214" rx="21" ry="6" fill="url(#metalGlow)" stroke="#0e1726" stroke-width="1.5" />
 
-            <!-- Head Assembly -->
             <g id="catHead" class="head" style="transform-origin: 200px 180px;" filter="url(#headShadow)">
-              <!-- Left Antenna -->
+              
               <path d="M 160 110 L 135 60" stroke="url(#metallic3D)" stroke-width="5" stroke-linecap="round" />
               <circle cx="135" cy="60" r="7" class="antenna-light" />
 
-              <!-- Right Antenna -->
               <path d="M 240 110 L 265 60" stroke="url(#metallic3D)" stroke-width="5" stroke-linecap="round" />
               <circle cx="265" cy="60" r="7" class="antenna-light" />
 
-              <!-- Head Main Capsule -->
               <rect x="135" y="105" width="130" height="96" rx="48" fill="url(#metallic3D)" stroke="#0e1726" stroke-width="2.5" />
 
-              <!-- Cybernetic Visor Faceplate -->
               <rect id="visorPlate" x="148" y="123" width="104" height="48" rx="22" fill="url(#visorBack)" stroke-width="2.5" />
 
-              <!-- Glowing Eyes inside Visor -->
               <ellipse id="eyeLeft" cx="178" cy="140" rx="9" ry="9" />
               <ellipse id="eyeRight" cx="222" cy="140" rx="9" ry="9" />
 
-              <!-- Mouth frequency soundwave -->
               <path id="mouthWave" d="M 170 152 Q 185 152 200 152 Q 215 152 230 152" fill="none" stroke-width="3" stroke-linecap="round" />
             </g>
           </g>
@@ -746,10 +696,8 @@
       </div>
     </section>
 
-    <!-- Right panel (Dialogue / Interactive Forms screen stack) -->
     <section class="screen-section">
       
-      <!-- SCREEN 1: WELCOME ONBOARDING -->
       <div class="screen active" id="screenWelcome">
         <div class="dialogue-box">
           <p class="dialogue-text" id="dialogueText"></p>
@@ -761,12 +709,10 @@
         </div>
       </div>
 
-      <!-- SCREEN 2: LOGIN FORM -->
       <div class="screen" id="screenLogin">
         <h2 class="form-title">Secure Login</h2>
         <p class="form-subtitle">Enter your details to coordinate with ULTRON</p>
 
-        <!-- Dynamic failure status log -->
         <div class="status-panel" id="loginStatusPanel">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px; flex-shrink: 0;">
             <circle cx="12" cy="12" r="10"></circle>
@@ -777,7 +723,7 @@
         </div>
 
         <form id="loginForm" novalidate>
-          <!-- Email -->
+          
           <div class="form-group">
             <label for="loginEmail">Email address</label>
             <div class="input-wrapper">
@@ -793,7 +739,6 @@
             </div>
           </div>
 
-          <!-- Password -->
           <div class="form-group">
             <label for="loginPassword">Security Password</label>
             <div class="input-wrapper password-field">
@@ -825,13 +770,11 @@
         </p>
       </div>
 
-      <!-- SCREEN 3: SIGNUP WELCOME DIALOGUE -->
       <div class="screen" id="screenSignupDialogue">
         <div class="dialogue-box">
           <p class="dialogue-text" id="dialogueTextSignup"></p>
         </div>
 
-        <!-- Conversational Name Input for onboarding -->
         <div class="name-input-container" id="nameInputContainer">
           <div class="input-wrapper" style="max-width: 300px; width: 100%; margin: 0 auto;">
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -852,13 +795,12 @@
         </div>
       </div>
 
-      <!-- SCREEN 4: SIGNUP FORM -->
       <div class="screen" id="screenSignup">
         <h2 class="form-title">Initialize System</h2>
         <p class="form-subtitle">Provision a new account on ULTRON</p>
 
         <form id="signupForm" novalidate>
-          <!-- Full Name -->
+          
           <div class="form-group">
             <label for="signupName">Full Name</label>
             <div class="input-wrapper">
@@ -874,7 +816,6 @@
             </div>
           </div>
 
-          <!-- Email -->
           <div class="form-group">
             <label for="signupEmail">Email address</label>
             <div class="input-wrapper">
@@ -890,7 +831,6 @@
             </div>
           </div>
 
-          <!-- Password -->
           <div class="form-group">
             <label for="signupPassword">Password (Min 8 Chars)</label>
             <div class="input-wrapper password-field">
@@ -912,7 +852,6 @@
             </div>
           </div>
 
-          <!-- Confirm Password -->
           <div class="form-group">
             <label for="signupConfirmPassword">Confirm Password</label>
             <div class="input-wrapper password-field">
@@ -948,7 +887,7 @@
   </main>
 
   <script>
-    // --- SYNTHESIZED WEB AUDIO SFX ---
+    
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) {
@@ -956,7 +895,6 @@
       }
     }
 
-    // Small typewriter bleep
     function playBleep() {
       initAudio();
       if (!audioCtx) return;
@@ -976,7 +914,6 @@
       osc.stop(audioCtx.currentTime + 0.05);
     }
 
-    // Cyber click
     function playClick() {
       initAudio();
       if (!audioCtx) return;
@@ -1004,13 +941,12 @@
       osc2.stop(audioCtx.currentTime + 0.12);
     }
 
-    // Success chime
     function playSuccess() {
       initAudio();
       if (!audioCtx) return;
       
       const now = audioCtx.currentTime;
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // Major Chord
+      const notes = [523.25, 659.25, 783.99, 1046.50]; 
       
       notes.forEach((freq, idx) => {
         const osc = audioCtx.createOscillator();
@@ -1030,7 +966,6 @@
       });
     }
 
-    // Error alert sound
     function playError() {
       initAudio();
       if (!audioCtx) return;
@@ -1045,7 +980,7 @@
       osc1.connect(gain);
       
       osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(112, now); // Detune effect
+      osc2.frequency.setValueAtTime(112, now); 
       osc2.connect(gain);
       
       gain.connect(audioCtx.destination);
@@ -1060,8 +995,6 @@
       osc2.stop(now + 0.75);
     }
 
-
-    // --- CONSTELLATION CANVAS GRAPHICS ---
     function initBackgroundParticles() {
       const canvas = document.getElementById("particleCanvas");
       const ctx = canvas.getContext("2d");
@@ -1125,13 +1058,10 @@
     }
     initBackgroundParticles();
 
-
-    // --- TYPING SEQUENCE DIALOGUE ENGINE ---
     let typewriterInterval = null;
     let isSpeakingText = false;
     let currentDialogueText = "";
 
-    // Prime speech synthesis voices list
     if ('speechSynthesis' in window) {
       window.speechSynthesis.getVoices();
       if (window.speechSynthesis.onvoiceschanged !== undefined) {
@@ -1147,25 +1077,21 @@
         return;
       }
 
-      // Cancel any ongoing speech
       window.speechSynthesis.cancel();
       isSpeakingText = false;
 
-      // Clean emojis and special characters for a clean read
       let cleanText = text.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
       cleanText = cleanText.replace(/[👋🤖💻🔓❌⚠️✅✨🎉]/g, '');
 
       const utterance = new SpeechSynthesisUtterance(cleanText);
 
-      // Cybernetic robotic voice style configuration
-      utterance.pitch = 0.85; // Low-ish pitch for a deep metallic robot assistant
-      utterance.rate = 1.0;   // Controlled, futuristic rate
+      utterance.pitch = 0.85; 
+      utterance.rate = 1.0;   
       utterance.volume = 1.0;
 
       const voices = window.speechSynthesis.getVoices();
       let selectedVoice = null;
 
-      // Prioritize clear and metallic/robot-like English TTS voices
       const priorityVoices = [
         'google us english',
         'microsoft david',
@@ -1196,7 +1122,7 @@
 
       utterance.onend = () => {
         isSpeakingText = false;
-        // Stop mouth talking if typewriter is also done
+        
         if (!typewriterInterval) {
           setRobotTalking(false);
         }
@@ -1231,7 +1157,6 @@
       
       currentDialogueText = text;
 
-      // Start text-to-speech concurrently
       speakText(text);
 
       let i = 0;
@@ -1246,7 +1171,6 @@
           clearInterval(typewriterInterval);
           typewriterInterval = null;
           
-          // Stop talking animation only if speech synthesis has also finished
           if (!isSpeakingText) {
             setRobotTalking(false);
           }
@@ -1267,14 +1191,13 @@
       }
     }
 
-    // Unlock Web Audio & SpeechSynthesis on first user gesture
     function initSpeechUnlock() {
       const unlock = () => {
         initAudio();
         if (audioCtx && audioCtx.state === 'suspended') {
           audioCtx.resume();
         }
-        // If welcome sequence was blocked on load, restart current dialogue utterance
+        
         if ('speechSynthesis' in window && !window.speechSynthesis.speaking && currentDialogueText) {
           speakText(currentDialogueText);
         }
@@ -1286,8 +1209,6 @@
     }
     initSpeechUnlock();
 
-
-    // --- SCREEN TRANSITIONS ---
     function transitionToScreen(targetScreenId, isSplit = false) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -1299,7 +1220,6 @@
       const targetScreen = document.getElementById(targetScreenId);
       const card = document.getElementById("portalCard");
 
-      // fade out
       activeScreen.style.opacity = "0";
       activeScreen.style.transform = "translateY(15px)";
 
@@ -1307,7 +1227,6 @@
         activeScreen.classList.remove("active");
         activeScreen.style.display = "none";
 
-        // adjust split layout
         if (isSplit) {
           card.classList.add("split-layout");
         } else {
@@ -1318,20 +1237,16 @@
         targetScreen.style.opacity = "0";
         targetScreen.style.transform = "translateY(15px)";
 
-        // Force reflow
         targetScreen.offsetHeight;
 
         targetScreen.classList.add("active");
         targetScreen.style.opacity = "1";
         targetScreen.style.transform = "translateY(0)";
         
-        // Re-calculate bounds for split alignment
         setTimeout(updateHeroBounds, 50);
       }, 400);
     }
 
-
-    // --- INITIAL ONBOARDING ---
     const welcomeMessages = [
       "Hello Human 👋",
       "I am ULTRON, your personal AI assistant.",
@@ -1340,7 +1255,7 @@
     ];
 
     window.addEventListener("load", () => {
-      // Start welcome speech sequence
+      
       setTimeout(() => {
         runTypewriterSequence(welcomeMessages, 0, "dialogueText", () => {
           document.getElementById("nextTriggerWelcome").classList.add("show");
@@ -1353,8 +1268,6 @@
       transitionToScreen("screenLogin", true);
     });
 
-
-    // --- NEW USER SIGNUP DIALOGUE ROUTE ---
     const signupWelcomeMessages = [
       "I see you are a new user. 🤖",
       "I will help you configure a new profile.",
@@ -1365,7 +1278,6 @@
       e.preventDefault();
       playClick();
       
-      // Reset conversational name container states
       document.getElementById("conversationalName").value = "";
       document.getElementById("nameInputContainer").style.display = "none";
       document.getElementById("nameInputContainer").classList.remove("show");
@@ -1377,7 +1289,7 @@
         runTypewriterSequence(signupWelcomeMessages, 0, "dialogueTextSignup", () => {
           const container = document.getElementById("nameInputContainer");
           container.style.display = "flex";
-          // force reflow
+          
           container.offsetHeight;
           container.classList.add("show");
           document.getElementById("conversationalName").focus();
@@ -1385,7 +1297,6 @@
       }, 500);
     });
 
-    // Confirm name listener
     document.getElementById("btnConfirmName").addEventListener("click", handleNameConfirm);
     document.getElementById("conversationalName").addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
@@ -1400,7 +1311,6 @@
       if (name === "") {
         playError();
         
-        // Temporarily put robot in alert visual state
         const robotEl = document.getElementById("catSvg");
         robotEl.classList.add("alert");
         isTracking = false;
@@ -1423,17 +1333,14 @@
 
       playClick();
 
-      // Prefill actual signup form input
       document.getElementById("signupName").value = name;
 
-      // Hide conversational input
       const container = document.getElementById("nameInputContainer");
       container.classList.remove("show");
       setTimeout(() => {
         container.style.display = "none";
       }, 400);
 
-      // Run welcome response dialogue sequence
       const welcomeNameMessages = [
         `Welcome, ${name}! 👋`,
         "Let's finalize your registration credentials.",
@@ -1448,7 +1355,7 @@
     document.getElementById("btnNextSignupDialogue").addEventListener("click", () => {
       playClick();
       transitionToScreen("screenSignup", true);
-      // Automatically shift focus to next field (Email) since Name is prefilled!
+      
       setTimeout(() => {
         document.getElementById("signupEmail").focus();
       }, 500);
@@ -1460,8 +1367,6 @@
       transitionToScreen("screenLogin", true);
     });
 
-
-    // --- INPUT LOOK & DETECT FOCUS ---
     const robot = document.getElementById("catSvg");
     const inputFields = document.querySelectorAll("input");
 
@@ -1474,7 +1379,6 @@
       });
     });
 
-    // Toggle Passwords visibility
     const togglePassBtns = document.querySelectorAll(".btn-toggle-pass");
     togglePassBtns.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1490,8 +1394,6 @@
       });
     });
 
-
-    // --- PHYSICAL EYE TRACKING SYSTEM ---
     const heroPanel = document.querySelector(".robot-section");
     const catWrapper = document.getElementById("robotWrapper");
     const headElement = document.getElementById("catHead");
@@ -1540,7 +1442,6 @@
       let localTargetX = heroRect.width / 2;
       let localTargetY = heroRect.height / 2;
 
-      // Only perform 2D movement when mouse is active and we are not speaking / custom state
       if (isMouseActive && isTracking) {
         const mx = mouseX - heroRect.left;
         const my = mouseY - heroRect.top;
@@ -1558,7 +1459,6 @@
         }
       }
 
-      // Keep within bounds
       const minX = robotWidth / 2 + 5;
       const maxX = heroRect.width - robotWidth / 2 - 5;
       const minY = robotHeight / 2 + 5;
@@ -1572,10 +1472,8 @@
       cx += dx * 0.085;
       cy += dy * 0.085;
 
-      // Translate wrapper
       catWrapper.style.transform = `translate(${cx - robotWidth / 2}px, ${cy - robotHeight / 2}px)`;
 
-      // Head and visor eye look tracking
       if (isTracking && isMouseActive && !robot.classList.contains("focusing-form")) {
         const headRect = headElement.getBoundingClientRect();
         const hx = headRect.left + headRect.width / 2;
@@ -1616,8 +1514,6 @@
       headElement.style.transform = "translate(0px, 0px) rotate(0deg)";
     }
 
-
-    // --- DIALOGUE TRIGGERS & CELEBRATIONS ---
     const successBanner = document.getElementById("successBanner");
     const bannerText = document.getElementById("bannerText");
     const loginStatusPanel = document.getElementById("loginStatusPanel");
@@ -1643,7 +1539,6 @@
       loginStatusText.innerHTML = message;
       loginStatusPanel.style.display = "flex";
 
-      // Speak the error message
       speakText(message);
 
       robotStateTimeout = setTimeout(() => {
@@ -1659,14 +1554,11 @@
       isTracking = false;
       resetHeadLook();
 
-      // Confetti splash
       triggerConfetti();
 
-      // Slide banner
       bannerText.innerHTML = bannerMessage;
       successBanner.classList.add("show");
 
-      // Speaking sequence
       typeDialogue(speakMessages[0], "statusMessageDummy", 40, () => {
         setTimeout(() => {
           typeDialogue(speakMessages[1], "statusMessageDummy", 40, () => {
@@ -1683,10 +1575,6 @@
       }, 6000);
     }
 
-
-    // --- FORM LOGIC & VALIDATIONS ---
-
-    // 1. LOGIN SUBMIT
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
       
@@ -1712,7 +1600,6 @@
         return;
       }
 
-      // Check credentials
       if (email === "admin@ultron.ai" && pass === "123456") {
         triggerRobotSuccess("Authentication Successful.", [
           "Authentication Successful.",
@@ -1727,7 +1614,6 @@
       }
     });
 
-    // 2. SIGNUP SUBMIT
     document.getElementById("signupForm").addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -1765,7 +1651,6 @@
         return;
       }
 
-      // Successful signup
       triggerRobotSuccess("Account Created Successfully.", [
         "Account Created Successfully.",
         "You are now ready to use ULTRON.",
@@ -1779,10 +1664,8 @@
     });
   </script>
 
-  <!-- Invisible element placeholder to trigger typewriter callback speaker sound engine -->
   <div id="statusMessageDummy" style="display:none;"></div>
 
-  <!-- Confetti canvas particle engine script -->
   <script>
     function triggerConfetti() {
       const canvas = document.getElementById("confettiCanvas");
