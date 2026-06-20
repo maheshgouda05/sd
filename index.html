@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <title>ULTRON AI - Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -12,204 +12,271 @@
   />
   <style>
     :root {
-      --bg-light: #fbf7ff;
-      --bg-accent: #f2e6ff;
-      --text: #151515;
-      --muted: #6b6b7d;
-      --border: #ebebf3;
-      --shadow: 0 30px 60px rgba(20, 20, 50, 0.08);
-      --purple: #8b5cf6;
-      --yellow: #fbbf24;
-      --orange: #fb7185;
-      --black: #111827;
+      --primary: #06b6d4;
+      --primary-hover: #0891b2;
+      --primary-glow: rgba(6, 182, 212, 0.25);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #ef4444;
+      --error-glow: rgba(239, 68, 68, 0.2);
+      --bg-dark: #070514;
+      --card-bg: rgba(255, 255, 255, 0.02);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --input-bg: rgba(255, 255, 255, 0.04);
+      --input-border: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+
+      /* Robotic customizable variables */
+      --neon-visor: #06b6d4;
+      --neon-eyes: #22d3ee;
+      --neon-core: #06b6d4;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(180deg, #ffffff 0%, #f8f7ff 100%);
-      color: var(--text);
+      background: radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                  linear-gradient(135deg, var(--bg-dark) 0%, #0c0822 50%, #030209 100%);
+      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
       overflow-x: hidden;
-    }
-
-    .container {
-      display: flex;
-      width: 100%;
-      max-width: 1120px;
-      min-height: 720px;
-      border-radius: 32px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      background: #fff;
-      animation: fadeIn 0.9s ease forwards;
-    }
-
-    .hero,
-    .login-panel {
-      flex: 1;
-      padding: 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #fdf7ff 0%, #faf3ff 52%, #f8f1ff 100%);
       position: relative;
-      overflow: hidden;
     }
 
-    .hero::before {
-      content: "";
+    /* Constellation background */
+    #particleCanvas {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.14), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(251, 190, 36, 0.16), transparent 28%);
+      width: 100%;
+      height: 100%;
       pointer-events: none;
+      z-index: 0;
     }
 
-    .illustration {
+    /* Interactive Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Success sliding banner */
+    .success-banner {
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(16, 185, 129, 0.12);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 16px 28px;
+      border-radius: 16px;
+      color: var(--success);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px var(--success-glow);
+      z-index: 100;
+      transition: top 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .success-banner.show {
+      top: 24px;
+    }
+    .success-banner svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Portal Card Layout */
+    .portal-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      background: var(--card-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border);
+      border-radius: 32px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(6, 182, 212, 0.08);
+      padding: 40px;
+      transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden;
       position: relative;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      gap: 18px;
       z-index: 1;
     }
 
-    .shape {
-      position: relative;
-      width: 120px;
-      height: 140px;
-      border-radius: 40% 50% 45% 50%;
-      box-shadow: 0 28px 45px rgba(95, 27, 205, 0.12);
+    /* Transition layout to Split layout on desktop */
+    .portal-card.split-layout {
+      max-width: 900px;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 40px;
+    }
+
+    .robot-section {
       display: flex;
       align-items: center;
       justify-content: center;
-      filter: drop-shadow(0 16px 30px rgba(99, 50, 215, 0.12));
-      animation: float 6s ease-in-out infinite;
+      flex: 1;
+      position: relative;
+      min-height: 290px;
+      transition: all 0.5s ease;
     }
 
-    .shape:nth-child(1) {
-      background: linear-gradient(145deg, #7c3aed 0%, #f9a8d4 100%);
-      width: 132px;
-      height: 150px;
-      transform: translateX(-32px);
-      animation-delay: 0s;
+    .screen-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      width: 100%;
     }
 
-    .shape:nth-child(2) {
-      background: linear-gradient(150deg, #fde68a 0%, #fb923c 100%);
-      width: 112px;
-      height: 124px;
-      border-radius: 50% 40% 55% 45%;
-      transform: translate(48px, -24px);
-      animation-delay: 0.6s;
+    /* Robot Container Floating */
+    .robot-wrapper {
+      width: 240px;
+      height: 270px;
+      will-change: transform;
+      filter: drop-shadow(0 10px 25px rgba(6, 182, 212, 0.15));
+      animation: robot-float 4s ease-in-out infinite;
     }
 
-    .shape:nth-child(3) {
-      background: linear-gradient(160deg, #101010 0%, #3f3f46 100%);
-      width: 96px;
-      height: 110px;
-      border-radius: 40% 40% 55% 55%;
-      transform: translate(-16px, 38px);
-      animation-delay: 1.2s;
+    /* SCREEN TRANSITION STYLING */
+    .screen {
+      display: none;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      width: 100%;
+    }
+    .screen.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .shape:nth-child(4) {
-      background: linear-gradient(135deg, #fb7185 0%, #fcd34d 100%);
-      width: 76px;
-      height: 92px;
-      transform: translate(62px, 56px);
-      animation-delay: 1.8s;
+    /* Dialogue container box */
+    .dialogue-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 24px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.02);
     }
 
-    .shape::before,
-    .shape::after {
-      content: "";
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      background: #fff;
-      border-radius: 50%;
-      top: 40%;
-      box-shadow: 28px 0 0 #fff;
+    .dialogue-text {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #e2e8f0;
+      line-height: 1.6;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
     }
 
-    .shape::after {
-      width: 36px;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.56);
-      border-radius: 999px;
-      top: 68%;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Title structures inside forms */
+    .form-title {
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+      text-align: left;
     }
 
-    .login-panel {
-      background: #ffffff;
-      padding: 56px 48px;
+    .form-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
     }
 
-    .login-panel h1 {
-      margin: 0;
-      font-size: clamp(2rem, 2.4vw, 2.75rem);
-      letter-spacing: -0.04em;
-    }
-
-    .login-panel p.subtitle {
-      margin: 16px 0 32px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
+    /* Forms components */
     .form-group {
       position: relative;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 12px;
-      font-size: 0.95rem;
-      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-muted);
     }
 
-    .form-group input {
-      width: 100%;
-      border: none;
-      border-bottom: 1.5px solid #e8e8f6;
-      padding: 12px 0;
-      font-size: 1rem;
-      color: var(--text);
-      background: transparent;
-      outline: none;
-      transition: border-color 0.25s ease;
-    }
-
-    .form-group input:focus {
-      border-color: var(--black);
-    }
-
-    .password-field {
+    .input-wrapper {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 0 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .input-wrapper:focus-within {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text-main);
+      padding: 13px 0 13px 10px;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .input-wrapper input::placeholder {
+      color: rgba(255, 255, 255, 0.22);
+    }
+
+    .input-wrapper svg.input-icon {
+      width: 18px;
+      height: 18px;
+      color: rgba(255, 255, 255, 0.35);
+      transition: color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .input-wrapper:focus-within svg.input-icon {
+      color: var(--primary);
     }
 
     .password-field button {
       border: none;
       background: none;
-      color: var(--muted);
+      color: var(--text-muted);
       cursor: pointer;
       padding: 8px;
       display: inline-flex;
@@ -219,285 +286,1568 @@
     }
 
     .password-field button:hover {
-      color: var(--black);
+      color: var(--text-main);
     }
 
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
+    .form-footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
     }
 
-    .checkbox-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .checkbox-group input {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--black);
-      border-radius: 4px;
-    }
-
-    .forgot-link {
-      color: var(--black);
+    .form-footer a {
+      color: var(--primary);
       text-decoration: none;
-      font-weight: 500;
-    }
-
-    .forgot-link:hover {
-      text-decoration: underline;
-    }
-
-    .button-group {
-      display: grid;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 14px;
-      font-size: 1rem;
       font-weight: 600;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: transform 0.22s ease, box-shadow 0.22s ease,
-        background-color 0.22s ease, color 0.22s ease;
+      transition: color 0.2s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 30px rgba(22, 22, 52, 0.12);
-    }
-
-    .btn-primary {
-      background: #111111;
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: #ffffff;
-      color: var(--text);
-      border-color: #e8e8f2;
-      box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.05);
-    }
-
-    .btn-secondary svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .footer-text {
-      margin-top: auto;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .footer-text a {
-      text-decoration: none;
-      color: var(--black);
-      font-weight: 600;
-    }
-
-    .footer-text a:hover {
+    .form-footer a:hover {
+      color: #22d3ee;
       text-decoration: underline;
     }
 
     .error-message {
-      color: #e11d48;
-      font-size: 0.92rem;
-      margin-top: -8px;
-      margin-bottom: 12px;
+      color: var(--error);
+      font-size: 0.8rem;
+      margin-top: 6px;
       display: none;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+    .error-message svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
     }
 
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0) rotate(0);
-      }
-      50% {
-        transform: translateY(-16px) rotate(1deg);
-      }
+    /* Tech Status logs panel inside forms screen */
+    .status-panel {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px dashed rgba(239, 68, 68, 0.25);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      color: #fca5a5;
+      margin-bottom: 18px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.4;
+      animation: alert-glow 1.5s infinite alternate;
+    }
+    @keyframes alert-glow {
+      from { box-shadow: 0 0 5px rgba(239, 68, 68, 0.05); }
+      to { box-shadow: 0 0 15px rgba(239, 68, 68, 0.15); }
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* NEON GLOWING BUTTONS */
+    .cyber-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+      color: var(--primary);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .cyber-btn span {
+      position: relative;
+      z-index: 2;
+      letter-spacing: 0.05em;
+    }
+    .cyber-btn:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .cyber-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
+    .cyber-btn:hover::before {
+      left: 100%;
     }
 
-    @media (max-width: 900px) {
-      .container {
-        flex-direction: column;
-        min-height: auto;
-      }
-
-      .hero,
-      .login-panel {
-        padding: 36px 24px;
-      }
-
-      .hero {
-        min-height: 320px;
-      }
+    /* Next trigger button fade-in show */
+    .next-trigger {
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .next-trigger.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
-    @media (max-width: 640px) {
+    /* Conversational Name input box */
+    .name-input-container {
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .name-input-container.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    @keyframes shake-x {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake-error {
+      animation: shake-x 0.3s ease-in-out;
+    }
+
+    /* --- ROBOT COMPONENT ANIMATIONS & SHADING --- */
+
+    /* Generic transition for smooth state morphing */
+    .ear-left, .ear-right, .eyebrow-left, .eyebrow-right, .eyelid, .pupil, .head, .tail, .arm, .antenna-light, .thruster-fire {
+      transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* Visor and core variable mappings */
+    #visorPlate { stroke: var(--neon-visor); transition: stroke 0.4s ease; }
+    #mouthWave { stroke: var(--neon-eyes); transition: stroke 0.4s ease; }
+    #eyeLeft, #eyeRight { fill: var(--neon-eyes); transition: fill 0.4s ease; }
+    #chestCore { fill: var(--neon-core); transition: fill 0.4s ease; }
+    .antenna-light { fill: var(--neon-eyes); transition: fill 0.4s ease; }
+
+    /* Idle Float animation */
+    @keyframes robot-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* visors wiggling speak Y scale */
+    @keyframes mouth-talking {
+      0%, 100% { transform: scaleY(0.4); }
+      50% { transform: scaleY(2.2); }
+    }
+    .talking #mouthWave {
+      animation: mouth-talking 0.14s infinite ease-in-out;
+      transform-origin: 200px 148px;
+    }
+
+    /* Head speak wiggles */
+    @keyframes head-speaking {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      50% { transform: rotate(-1deg) translateY(-1px); }
+    }
+    .talking #catHead {
+      animation: head-speaking 0.24s infinite ease-in-out;
+    }
+
+    /* Hand speak gesture wiggles */
+    @keyframes hand-speaking-left {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(-3deg); }
+    }
+    .talking #armLeft {
+      animation: hand-speaking-left 0.4s infinite ease-in-out;
+      transform-origin: 140px 235px;
+    }
+
+    /* Core breathing pulse */
+    @keyframes core-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+    #chestCore {
+      animation: core-pulse 2s infinite ease-in-out;
+      transform-origin: 200px 280px;
+    }
+
+    /* Jet fire engine wiggles */
+    @keyframes thruster-flame {
+      0%, 100% { transform: scaleY(1); opacity: 0.8; }
+      50% { transform: scaleY(1.3) scaleX(0.95); opacity: 1; }
+    }
+    #thrusterFire {
+      animation: thruster-flame 0.15s infinite ease-in-out;
+      transform-origin: 200px 370px;
+    }
+
+    /* visors blink */
+    @keyframes robot-blink {
+      0%, 90%, 94%, 100% { transform: scaleY(1); }
+      92%, 96% { transform: scaleY(0.05); }
+    }
+    #eyeLeft, #eyeRight {
+      animation: robot-blink 5s infinite;
+      transform-origin: 200px 140px;
+    }
+
+    /* Spinning holographic rings */
+    .holo-ring-1 {
+      transform-origin: 200px 380px;
+      animation: spin-ring 9s infinite linear;
+    }
+    .holo-ring-2 {
+      transform-origin: 200px 380px;
+      animation: spin-ring-reverse 13s infinite linear;
+    }
+    @keyframes spin-ring {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spin-ring-reverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    /* --- STATE-SPECIFIC CLASS MODIFIERS --- */
+
+    /* 1. Alert/Failure state (Red eyes, vibration alert) */
+    .robot.alert {
+      --neon-visor: #ef4444;
+      --neon-eyes: #f87171;
+      --neon-core: #ef4444;
+    }
+    @keyframes robot-vibrate {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      20% { transform: translate(-3px, 1px) rotate(-1deg); }
+      40% { transform: translate(1px, -2px) rotate(1deg); }
+      60% { transform: translate(-2px, -1px) rotate(-1deg); }
+      80% { transform: translate(3px, 2px) rotate(1deg); }
+    }
+    .robot.alert #catInner {
+      animation: robot-vibrate 0.1s infinite linear;
+      transform-origin: bottom center;
+    }
+
+    /* 2. Success/Happy state (Green eyes, jumping waving paw) */
+    .robot.happy {
+      --neon-visor: #10b981;
+      --neon-eyes: #34d399;
+      --neon-core: #10b981;
+    }
+    .robot.happy #armRight { display: none; }
+    .robot.happy #armRightWave {
+      display: block !important;
+      animation: paw-wave 0.28s infinite ease-in-out;
+    }
+    @keyframes paw-wave {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-15deg); }
+    }
+    @keyframes success-jump {
+      0%, 100% { transform: translateY(0) scaleY(1); }
+      15% { transform: translateY(12px) scaleY(0.8) scaleX(1.1); }
+      35% { transform: translateY(-60px) scaleY(1.1) scaleX(0.95); }
+      55% { transform: translateY(3px) scaleY(0.93) scaleX(1.04); }
+      75% { transform: translateY(-20px) scaleY(1.05) scaleX(0.97); }
+      90% { transform: translateY(0) scaleY(1); }
+    }
+    .robot.happy #catInner {
+      animation: success-jump 1.5s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    /* 3. Typing eye focus (inspecting text) */
+    .robot.focusing-form #catHead {
+      transform: rotate(5deg) translate(3px, 1px) !important;
+    }
+    .robot.focusing-form #eyeLeft, 
+    .robot.focusing-form #eyeRight {
+      transform: translate(6px, 0px) !important;
+      animation: none !important; /* freeze blinking */
+    }
+
+    /* --- RESPONSIVE SPLIT STYLING --- */
+    @media (max-width: 850px) {
       body {
         padding: 16px;
       }
-
-      .container {
-        border-radius: 24px;
+      .portal-card {
+        max-width: 480px;
+        padding: 32px 24px;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 16px !important;
       }
-
-      .login-panel {
-        padding: 28px 20px 24px;
+      .robot-section {
+        min-height: 250px;
+        width: 100%;
       }
-
-      .hero {
-        padding: 28px 20px;
+      .robot-wrapper {
+        width: 200px;
+        height: 225px;
+      }
+      .screen-section {
+        width: 100%;
+      }
+      .form-title {
+        text-align: center;
+      }
+      .form-subtitle {
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <section class="hero">
-      <div class="illustration" aria-hidden="true">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
+  <!-- Futuristic Constellation Backdrop -->
+  <canvas id="particleCanvas"></canvas>
+  <!-- Fullscreen celebration confetti -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Success Notification overlay -->
+  <div class="success-banner" id="successBanner">
+    <div class="success-content">
+      <!-- SVG checkmark -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span id="bannerText">Authentication Successful.</span>
+    </div>
+  </div>
+
+  <main class="portal-card" id="portalCard">
+    <!-- Left panel (Robot view) -->
+    <section class="robot-section">
+      <div class="robot-wrapper" id="robotWrapper">
+        <svg class="cat" id="catSvg" viewBox="0 0 400 450">
+          <defs>
+            <!-- Shadow filter layer -->
+            <filter id="shadow3D" x="-10%" y="-10%" width="120%" height="120%">
+              <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#020617" flood-opacity="0.35" />
+            </filter>
+            <filter id="headShadow" x="-15%" y="-15%" width="130%" height="130%">
+              <feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#020617" flood-opacity="0.45" />
+            </filter>
+
+            <!-- Radial 3D styled metallic shaders -->
+            <radialGradient id="metallic3D" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#475569" />
+              <stop offset="60%" stop-color="#1e293b" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </radialGradient>
+            <radialGradient id="metalGlow" cx="40%" cy="30%" r="60%">
+              <stop offset="0%" stop-color="#64748b" />
+              <stop offset="100%" stop-color="#334155" />
+            </radialGradient>
+            <radialGradient id="visorBack" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#0b1329" />
+              <stop offset="100%" stop-color="#020813" />
+            </radialGradient>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#22d3ee" />
+              <stop offset="70%" stop-color="#06b6d4" />
+              <stop offset="100%" stop-color="rgba(6, 182, 212, 0)" />
+            </radialGradient>
+            <radialGradient id="fireGlow" cx="50%" cy="30%" r="50%">
+              <stop offset="0%" stop-color="#38bdf8" />
+              <stop offset="70%" stop-color="#0284c7" />
+              <stop offset="100%" stop-color="rgba(2, 132, 199, 0)" />
+            </radialGradient>
+          </defs>
+
+          <!-- Shadow underneath -->
+          <ellipse cx="200" cy="430" rx="70" ry="10" fill="rgba(6, 182, 212, 0.15)" filter="blur(5px)" />
+
+          <g id="catInner">
+            <!-- Holographic concentric rings -->
+            <ellipse cx="200" cy="380" rx="60" ry="16" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="18,10" opacity="0.38" class="holo-ring-1" />
+            <ellipse cx="200" cy="380" rx="75" ry="20" fill="none" stroke="#0891b2" stroke-width="1" stroke-dasharray="8,15" opacity="0.3" class="holo-ring-2" />
+
+            <!-- Jet Flame -->
+            <path id="thrusterFire" class="thruster-fire" d="M 188 360 Q 200 410 212 360 Z" fill="url(#fireGlow)" />
+
+            <!-- Booster Cone -->
+            <polygon points="180,340 220,340 205,362 195,362" fill="url(#metalGlow)" stroke="#0e1726" stroke-width="2" filter="url(#shadow3D)" />
+
+            <!-- Torso Body Plate -->
+            <path id="chest" d="M 150 225 L 250 225 C 270 265, 262 315, 240 340 L 160 340 C 138 315, 130 265, 150 225 Z" fill="url(#metallic3D)" stroke="#0e1726" stroke-width="2.5" filter="url(#shadow3D)" />
+
+            <!-- Torso Details -->
+            <circle cx="200" cy="282" r="23" fill="#090d16" stroke="rgba(255,255,255,0.05)" stroke-width="2.5" />
+            <!-- Core pulse reactor -->
+            <circle id="chestCore" cx="200" cy="282" r="15" fill="url(#coreGlow)" />
+            <!-- Body Tech Plates lines -->
+            <line x1="162" y1="245" x2="190" y2="245" stroke="#0f172a" stroke-width="2" stroke-linecap="round" />
+            <line x1="210" y1="245" x2="238" y2="245" stroke="#0f172a" stroke-width="2" stroke-linecap="round" />
+
+            <!-- Left Segmented Arm -->
+            <path id="armLeft" class="arm" d="M 140 235 C 110 250, 102 285, 112 315" stroke="url(#metallic3D)" stroke-width="15" stroke-linecap="round" fill="none" filter="url(#shadow3D)" />
+            <circle cx="112" cy="326" r="8" fill="url(#metalGlow)" stroke="#0e1726" />
+
+            <!-- Right Segmented Arm -->
+            <path id="armRight" class="arm" d="M 260 235 C 290 250, 298 285, 288 315" stroke="url(#metallic3D)" stroke-width="15" stroke-linecap="round" fill="none" filter="url(#shadow3D)" />
+            <circle cx="288" cy="326" r="8" fill="url(#metalGlow)" stroke="#0e1726" />
+
+            <!-- Right Waving Arm (Happy state) -->
+            <g id="armRightWave" style="display: none; transform-origin: 260px 235px;">
+              <path d="M 260 235 C 290 210, 310 168, 300 148" stroke="url(#metallic3D)" stroke-width="15" stroke-linecap="round" fill="none" />
+              <circle cx="300" cy="138" r="8" fill="url(#metalGlow)" stroke="#0e1726" />
+              <!-- Small wave indicator -->
+              <circle cx="300" cy="138" r="4" fill="#22d3ee" opacity="0.8" />
+            </g>
+
+            <!-- Neck Rings -->
+            <ellipse cx="200" cy="206" rx="25" ry="7" fill="url(#metalGlow)" stroke="#0e1726" stroke-width="1.5" />
+            <ellipse cx="200" cy="214" rx="21" ry="6" fill="url(#metalGlow)" stroke="#0e1726" stroke-width="1.5" />
+
+            <!-- Head Assembly -->
+            <g id="catHead" class="head" style="transform-origin: 200px 180px;" filter="url(#headShadow)">
+              <!-- Left Antenna -->
+              <path d="M 160 110 L 135 60" stroke="url(#metallic3D)" stroke-width="5" stroke-linecap="round" />
+              <circle cx="135" cy="60" r="7" class="antenna-light" />
+
+              <!-- Right Antenna -->
+              <path d="M 240 110 L 265 60" stroke="url(#metallic3D)" stroke-width="5" stroke-linecap="round" />
+              <circle cx="265" cy="60" r="7" class="antenna-light" />
+
+              <!-- Head Main Capsule -->
+              <rect x="135" y="105" width="130" height="96" rx="48" fill="url(#metallic3D)" stroke="#0e1726" stroke-width="2.5" />
+
+              <!-- Cybernetic Visor Faceplate -->
+              <rect id="visorPlate" x="148" y="123" width="104" height="48" rx="22" fill="url(#visorBack)" stroke-width="2.5" />
+
+              <!-- Glowing Eyes inside Visor -->
+              <ellipse id="eyeLeft" cx="178" cy="140" rx="9" ry="9" />
+              <ellipse id="eyeRight" cx="222" cy="140" rx="9" ry="9" />
+
+              <!-- Mouth frequency soundwave -->
+              <path id="mouthWave" d="M 170 152 Q 185 152 200 152 Q 215 152 230 152" fill="none" stroke-width="3" stroke-linecap="round" />
+            </g>
+          </g>
+        </svg>
       </div>
     </section>
 
-    <section class="login-panel">
-      <h1>Welcome back!</h1>
-      <p class="subtitle">Please enter your details</p>
+    <!-- Right panel (Dialogue / Interactive Forms screen stack) -->
+    <section class="screen-section">
+      
+      <!-- SCREEN 1: WELCOME ONBOARDING -->
+      <div class="screen active" id="screenWelcome">
+        <div class="dialogue-box">
+          <p class="dialogue-text" id="dialogueText"></p>
+        </div>
+        <div class="next-trigger" id="nextTriggerWelcome">
+          <button class="cyber-btn" id="btnNextWelcome">
+            <span>NEXT</span>
+          </button>
+        </div>
+      </div>
 
-      <form id="loginForm" novalidate>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" type="email" name="email" placeholder="you@example.com" required />
-          <div class="error-message" id="emailError">Please enter a valid email.</div>
+      <!-- SCREEN 2: LOGIN FORM -->
+      <div class="screen" id="screenLogin">
+        <h2 class="form-title">Secure Login</h2>
+        <p class="form-subtitle">Enter your details to coordinate with ULTRON</p>
+
+        <!-- Dynamic failure status log -->
+        <div class="status-panel" id="loginStatusPanel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px; flex-shrink: 0;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="loginStatusText">Authentication Failed.</span>
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="password-field">
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Enter password"
-              minlength="6"
-              required
-            />
-            <button type="button" id="togglePassword" aria-label="Toggle password visibility">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
+        <form id="loginForm" novalidate>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="loginEmail">Email address</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
               </svg>
-            </button>
+              <input id="loginEmail" type="email" placeholder="admin@ultron.ai" required />
+            </div>
+            <div class="error-message" id="loginEmailError">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Please enter a valid email.</span>
+            </div>
           </div>
-          <div class="error-message" id="passwordError">Password must be at least 6 characters.</div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="loginPassword">Security Password</label>
+            <div class="input-wrapper password-field">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input id="loginPassword" type="password" placeholder="••••••••" required />
+              <button type="button" class="btn-toggle-pass" aria-label="Toggle password visibility">
+                <svg class="eye-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <div class="error-message" id="loginPasswordError">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Password must be entered.</span>
+            </div>
+          </div>
+
+          <button class="cyber-btn" type="submit">
+            <span>RUN CODE</span>
+          </button>
+        </form>
+
+        <p class="form-footer">
+          New User? <a href="#" id="linkGotoSignup">Create Account</a>
+        </p>
+      </div>
+
+      <!-- SCREEN 3: SIGNUP WELCOME DIALOGUE -->
+      <div class="screen" id="screenSignupDialogue">
+        <div class="dialogue-box">
+          <p class="dialogue-text" id="dialogueTextSignup"></p>
         </div>
 
-        <div class="actions">
-          <label class="checkbox-group">
-            <input type="checkbox" id="remember" name="remember" />
-            Remember for 30 days
-          </label>
-          <a class="forgot-link" href="#">Forgot password?</a>
-        </div>
-
-        <div class="button-group">
-          <button class="btn btn-primary" type="submit">Log in</button>
-          <button class="btn btn-secondary" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21.35 11.1c0-.77-.07-1.35-.22-1.94H12v3.68h5.7c-.24 1.34-.98 2.32-2.1 3.05v2.53h3.4c1.98-1.83 3.13-4.52 3.13-7.32z"/>
-              <path d="M12 22c2.84 0 5.23-.93 6.98-2.52l-3.4-2.53c-.95.64-2.16 1.02-3.58 1.02-2.75 0-5.08-1.86-5.92-4.37H2.54v2.74C4.29 19.98 7.87 22 12 22z"/>
-              <path d="M6.08 13.6A5.99 5.99 0 0 1 6 12c0-.55.09-1.09.25-1.6V7.66H2.54A9.98 9.98 0 0 0 1 12c0 1.61.39 3.13 1.08 4.47l3-2.87z"/>
-              <path d="M12 6.5c1.55 0 2.95.53 4.05 1.56l3.03-3.03C17.2 3.4 14.74 2.5 12 2.5 7.87 2.5 4.29 4.52 2.54 7.26l3.71 2.74C6.92 8.36 9.25 6.5 12 6.5z"/>
+        <!-- Conversational Name Input for onboarding -->
+        <div class="name-input-container" id="nameInputContainer">
+          <div class="input-wrapper" style="max-width: 300px; width: 100%; margin: 0 auto;">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            Log in with Google
+            <input id="conversationalName" type="text" placeholder="Enter your name..." required autocomplete="off" />
+          </div>
+          <button type="button" class="cyber-btn" id="btnConfirmName" style="max-width: 160px; width: 100%; margin: 0 auto;">
+            <span>CONFIRM</span>
           </button>
         </div>
 
-        <p class="footer-text">
-          Don’t have an account?
-          <a href="#">Sign up</a>
+        <div class="next-trigger" id="nextTriggerSignup">
+          <button class="cyber-btn" id="btnNextSignupDialogue">
+            <span>NEXT</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: SIGNUP FORM -->
+      <div class="screen" id="screenSignup">
+        <h2 class="form-title">Initialize System</h2>
+        <p class="form-subtitle">Provision a new account on ULTRON</p>
+
+        <form id="signupForm" novalidate>
+          <!-- Full Name -->
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input id="signupName" type="text" placeholder="John Doe" required />
+            </div>
+            <div class="error-message" id="signupNameError">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Please enter your name.</span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="signupEmail">Email address</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input id="signupEmail" type="email" placeholder="human@domain.com" required />
+            </div>
+            <div class="error-message" id="signupEmailError">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Please enter a valid email format.</span>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="signupPassword">Password (Min 8 Chars)</label>
+            <div class="input-wrapper password-field">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input id="signupPassword" type="password" placeholder="••••••••" minlength="8" required />
+              <button type="button" class="btn-toggle-pass" aria-label="Toggle password visibility">
+                <svg class="eye-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <div class="error-message" id="signupPasswordError">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Password must be at least 8 characters.</span>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="signupConfirmPassword">Confirm Password</label>
+            <div class="input-wrapper password-field">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input id="signupConfirmPassword" type="password" placeholder="••••••••" minlength="8" required />
+              <button type="button" class="btn-toggle-pass" aria-label="Toggle password visibility">
+                <svg class="eye-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <div class="error-message" id="signupConfirmPasswordError">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Passwords do not match.</span>
+            </div>
+          </div>
+
+          <button class="cyber-btn" type="submit">
+            <span>REGISTER CODES</span>
+          </button>
+        </form>
+
+        <p class="form-footer">
+          Already registered? <a href="#" id="linkGotoLogin">Login</a>
         </p>
-      </form>
+      </div>
+
     </section>
-  </div>
+  </main>
 
   <script>
-    const loginForm = document.getElementById("loginForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const emailError = document.getElementById("emailError");
-    const passwordError = document.getElementById("passwordError");
-    const togglePassword = document.getElementById("togglePassword");
+    // --- SYNTHESIZED WEB AUDIO SFX ---
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
 
-    togglePassword.addEventListener("click", () => {
-      const type = passwordInput.type === "password" ? "text" : "password";
-      passwordInput.type = type;
-      togglePassword.innerHTML = type === "password"
-        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
-        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.03 10.03 0 0 1 12 20c-7 0-11-8-11-8a18.19 18.19 0 0 1 4.25-5.12"/><path d="M1 1l22 22"/><path d="M9.88 9.88a3 3 0 0 0 4.24 4.24"/><path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"/><path d="M16.72 16.72A9.94 9.94 0 0 0 21 12s-4-8-9-8a9.72 9.72 0 0 0-5 .13"/></svg>`;
-    });
+    // Small typewriter bleep
+    function playBleep() {
+      initAudio();
+      if (!audioCtx) return;
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(900 + Math.random() * 400, audioCtx.currentTime);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
 
-    loginForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      let valid = true;
+    // Cyber click
+    function playClick() {
+      initAudio();
+      if (!audioCtx) return;
+      
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(1400, audioCtx.currentTime);
+      osc1.connect(gain);
+      
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(450, audioCtx.currentTime);
+      osc2.connect(gain);
+      
+      gain.connect(audioCtx.destination);
+      
+      gain.gain.setValueAtTime(0.07, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.12);
+      
+      osc1.start();
+      osc1.stop(audioCtx.currentTime + 0.12);
+      osc2.start();
+      osc2.stop(audioCtx.currentTime + 0.12);
+    }
 
-      if (!emailInput.checkValidity()) {
-        emailError.style.display = "block";
-        valid = false;
+    // Success chime
+    function playSuccess() {
+      initAudio();
+      if (!audioCtx) return;
+      
+      const now = audioCtx.currentTime;
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // Major Chord
+      
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.05, now + idx * 0.08 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.5);
+        
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.55);
+      });
+    }
+
+    // Error alert sound
+    function playError() {
+      initAudio();
+      if (!audioCtx) return;
+      
+      const now = audioCtx.currentTime;
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(110, now);
+      osc1.connect(gain);
+      
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(112, now); // Detune effect
+      osc2.connect(gain);
+      
+      gain.connect(audioCtx.destination);
+      
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.linearRampToValueAtTime(0.08, now + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.7);
+      
+      osc1.start(now);
+      osc1.stop(now + 0.75);
+      osc2.start(now);
+      osc2.stop(now + 0.75);
+    }
+
+
+    // --- CONSTELLATION CANVAS GRAPHICS ---
+    function initBackgroundParticles() {
+      const canvas = document.getElementById("particleCanvas");
+      const ctx = canvas.getContext("2d");
+      
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      window.addEventListener("resize", () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      });
+
+      const dots = [];
+      const numDots = Math.min(70, Math.floor((width * height) / 16000));
+
+      for (let i = 0; i < numDots; i++) {
+        dots.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 2 + 1
+        });
+      }
+
+      function update() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "rgba(6, 182, 212, 0.18)";
+        ctx.strokeStyle = "rgba(6, 182, 212, 0.04)";
+
+        for (let i = 0; i < numDots; i++) {
+          const d = dots[i];
+          d.x += d.vx;
+          d.y += d.vy;
+
+          if (d.x < 0 || d.x > width) d.vx *= -1;
+          if (d.y < 0 || d.y > height) d.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < numDots; j++) {
+            const d2 = dots[j];
+            const dist = Math.sqrt((d.x - d2.x) ** 2 + (d.y - d2.y) ** 2);
+            if (dist < 100) {
+              ctx.beginPath();
+              ctx.moveTo(d.x, d.y);
+              ctx.lineTo(d2.x, d2.y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(update);
+      }
+      update();
+    }
+    initBackgroundParticles();
+
+
+    // --- TYPING SEQUENCE DIALOGUE ENGINE ---
+    let typewriterInterval = null;
+    let isSpeakingText = false;
+    let currentDialogueText = "";
+
+    // Prime speech synthesis voices list
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
+      }
+    }
+
+    function speakText(text, onEndCallback = null) {
+      if (!('speechSynthesis' in window)) {
+        if (onEndCallback) onEndCallback();
+        return;
+      }
+
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      isSpeakingText = false;
+
+      // Clean emojis and special characters for a clean read
+      let cleanText = text.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+      cleanText = cleanText.replace(/[👋🤖💻🔓❌⚠️✅✨🎉]/g, '');
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+
+      // Cybernetic robotic voice style configuration
+      utterance.pitch = 0.85; // Low-ish pitch for a deep metallic robot assistant
+      utterance.rate = 1.0;   // Controlled, futuristic rate
+      utterance.volume = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      let selectedVoice = null;
+
+      // Prioritize clear and metallic/robot-like English TTS voices
+      const priorityVoices = [
+        'google us english',
+        'microsoft david',
+        'microsoft zira',
+        'daniel',
+        'samantha',
+        'karen',
+        'english'
+      ];
+
+      for (let name of priorityVoices) {
+        selectedVoice = voices.find(v => v.name.toLowerCase().includes(name) && v.lang.startsWith('en'));
+        if (selectedVoice) break;
+      }
+
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang.startsWith('en'));
+      }
+
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+
+      utterance.onstart = () => {
+        isSpeakingText = true;
+        setRobotTalking(true);
+      };
+
+      utterance.onend = () => {
+        isSpeakingText = false;
+        // Stop mouth talking if typewriter is also done
+        if (!typewriterInterval) {
+          setRobotTalking(false);
+        }
+        if (onEndCallback) onEndCallback();
+      };
+
+      utterance.onerror = (e) => {
+        console.warn("Speech synthesis error:", e);
+        isSpeakingText = false;
+        if (!typewriterInterval) {
+          setRobotTalking(false);
+        }
+        if (onEndCallback) onEndCallback();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function setRobotTalking(isTalking) {
+      const robot = document.getElementById("catSvg");
+      if (isTalking) {
+        robot.classList.add("talking");
       } else {
-        emailError.style.display = "none";
+        robot.classList.remove("talking");
       }
+    }
 
-      if (!passwordInput.checkValidity()) {
-        passwordError.style.display = "block";
-        valid = false;
+    function typeDialogue(text, elementId, speed = 35, callback = null) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = "";
+      setRobotTalking(true);
+      
+      currentDialogueText = text;
+
+      // Start text-to-speech concurrently
+      speakText(text);
+
+      let i = 0;
+      if (typewriterInterval) clearInterval(typewriterInterval);
+
+      typewriterInterval = setInterval(() => {
+        if (i < text.length) {
+          el.innerHTML += text.charAt(i);
+          if (i % 2 === 0) playBleep();
+          i++;
+        } else {
+          clearInterval(typewriterInterval);
+          typewriterInterval = null;
+          
+          // Stop talking animation only if speech synthesis has also finished
+          if (!isSpeakingText) {
+            setRobotTalking(false);
+          }
+          if (callback) callback();
+        }
+      }, speed);
+    }
+
+    function runTypewriterSequence(messages, index, textElementId, finishCallback) {
+      if (index < messages.length) {
+        typeDialogue(messages[index], textElementId, 35, () => {
+          setTimeout(() => {
+            runTypewriterSequence(messages, index + 1, textElementId, finishCallback);
+          }, 1100);
+        });
       } else {
-        passwordError.style.display = "none";
+        if (finishCallback) finishCallback();
+      }
+    }
+
+    // Unlock Web Audio & SpeechSynthesis on first user gesture
+    function initSpeechUnlock() {
+      const unlock = () => {
+        initAudio();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        // If welcome sequence was blocked on load, restart current dialogue utterance
+        if ('speechSynthesis' in window && !window.speechSynthesis.speaking && currentDialogueText) {
+          speakText(currentDialogueText);
+        }
+        window.removeEventListener('click', unlock);
+        window.removeEventListener('keydown', unlock);
+      };
+      window.addEventListener('click', unlock);
+      window.addEventListener('keydown', unlock);
+    }
+    initSpeechUnlock();
+
+
+    // --- SCREEN TRANSITIONS ---
+    function transitionToScreen(targetScreenId, isSplit = false) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      isSpeakingText = false;
+      currentDialogueText = "";
+
+      const activeScreen = document.querySelector(".screen.active");
+      const targetScreen = document.getElementById(targetScreenId);
+      const card = document.getElementById("portalCard");
+
+      // fade out
+      activeScreen.style.opacity = "0";
+      activeScreen.style.transform = "translateY(15px)";
+
+      setTimeout(() => {
+        activeScreen.classList.remove("active");
+        activeScreen.style.display = "none";
+
+        // adjust split layout
+        if (isSplit) {
+          card.classList.add("split-layout");
+        } else {
+          card.classList.remove("split-layout");
+        }
+
+        targetScreen.style.display = "block";
+        targetScreen.style.opacity = "0";
+        targetScreen.style.transform = "translateY(15px)";
+
+        // Force reflow
+        targetScreen.offsetHeight;
+
+        targetScreen.classList.add("active");
+        targetScreen.style.opacity = "1";
+        targetScreen.style.transform = "translateY(0)";
+        
+        // Re-calculate bounds for split alignment
+        setTimeout(updateHeroBounds, 50);
+      }, 400);
+    }
+
+
+    // --- INITIAL ONBOARDING ---
+    const welcomeMessages = [
+      "Hello Human 👋",
+      "I am ULTRON, your personal AI assistant.",
+      "To access my intelligence, please login.",
+      "Click Next to continue."
+    ];
+
+    window.addEventListener("load", () => {
+      // Start welcome speech sequence
+      setTimeout(() => {
+        runTypewriterSequence(welcomeMessages, 0, "dialogueText", () => {
+          document.getElementById("nextTriggerWelcome").classList.add("show");
+        });
+      }, 600);
+    });
+
+    document.getElementById("btnNextWelcome").addEventListener("click", () => {
+      playClick();
+      transitionToScreen("screenLogin", true);
+    });
+
+
+    // --- NEW USER SIGNUP DIALOGUE ROUTE ---
+    const signupWelcomeMessages = [
+      "I see you are a new user. 🤖",
+      "I will help you configure a new profile.",
+      "First, what should I call you? Please type your name."
+    ];
+
+    document.getElementById("linkGotoSignup").addEventListener("click", (e) => {
+      e.preventDefault();
+      playClick();
+      
+      // Reset conversational name container states
+      document.getElementById("conversationalName").value = "";
+      document.getElementById("nameInputContainer").style.display = "none";
+      document.getElementById("nameInputContainer").classList.remove("show");
+      document.getElementById("nextTriggerSignup").classList.remove("show");
+
+      transitionToScreen("screenSignupDialogue", false);
+      
+      setTimeout(() => {
+        runTypewriterSequence(signupWelcomeMessages, 0, "dialogueTextSignup", () => {
+          const container = document.getElementById("nameInputContainer");
+          container.style.display = "flex";
+          // force reflow
+          container.offsetHeight;
+          container.classList.add("show");
+          document.getElementById("conversationalName").focus();
+        });
+      }, 500);
+    });
+
+    // Confirm name listener
+    document.getElementById("btnConfirmName").addEventListener("click", handleNameConfirm);
+    document.getElementById("conversationalName").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleNameConfirm();
+      }
+    });
+
+    function handleNameConfirm() {
+      const nameInput = document.getElementById("conversationalName");
+      const name = nameInput.value.trim();
+      
+      if (name === "") {
+        playError();
+        
+        // Temporarily put robot in alert visual state
+        const robotEl = document.getElementById("catSvg");
+        robotEl.classList.add("alert");
+        isTracking = false;
+        resetHeadLook();
+        
+        nameInput.parentElement.classList.add("shake-error");
+        setTimeout(() => {
+          nameInput.parentElement.classList.remove("shake-error");
+        }, 500);
+
+        typeDialogue("You must provide a name to initialize system authorization.", "dialogueTextSignup", 35, () => {
+          setTimeout(() => {
+            robotEl.classList.remove("alert");
+            isTracking = true;
+            typeDialogue("First, what should I call you? Please type your name.", "dialogueTextSignup", 35);
+          }, 2500);
+        });
+        return;
       }
 
-      if (valid) {
-        alert("Login successful!");
-        loginForm.reset();
+      playClick();
+
+      // Prefill actual signup form input
+      document.getElementById("signupName").value = name;
+
+      // Hide conversational input
+      const container = document.getElementById("nameInputContainer");
+      container.classList.remove("show");
+      setTimeout(() => {
+        container.style.display = "none";
+      }, 400);
+
+      // Run welcome response dialogue sequence
+      const welcomeNameMessages = [
+        `Welcome, ${name}! 👋`,
+        "Let's finalize your registration credentials.",
+        "Click Next to continue."
+      ];
+
+      runTypewriterSequence(welcomeNameMessages, 0, "dialogueTextSignup", () => {
+        document.getElementById("nextTriggerSignup").classList.add("show");
+      });
+    }
+
+    document.getElementById("btnNextSignupDialogue").addEventListener("click", () => {
+      playClick();
+      transitionToScreen("screenSignup", true);
+      // Automatically shift focus to next field (Email) since Name is prefilled!
+      setTimeout(() => {
+        document.getElementById("signupEmail").focus();
+      }, 500);
+    });
+
+    document.getElementById("linkGotoLogin").addEventListener("click", (e) => {
+      e.preventDefault();
+      playClick();
+      transitionToScreen("screenLogin", true);
+    });
+
+
+    // --- INPUT LOOK & DETECT FOCUS ---
+    const robot = document.getElementById("catSvg");
+    const inputFields = document.querySelectorAll("input");
+
+    inputFields.forEach(input => {
+      input.addEventListener("focus", () => {
+        robot.classList.add("focusing-form");
+      });
+      input.addEventListener("blur", () => {
+        robot.classList.remove("focusing-form");
+      });
+    });
+
+    // Toggle Passwords visibility
+    const togglePassBtns = document.querySelectorAll(".btn-toggle-pass");
+    togglePassBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const input = btn.previousElementSibling;
+        const eyeSvg = btn.querySelector(".eye-svg");
+        const type = input.type === "password" ? "text" : "password";
+        input.type = type;
+        
+        playBleep();
+        eyeSvg.innerHTML = type === "password"
+          ? `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`
+          : `<path d="M17.94 17.94A10.03 10.03 0 0 1 12 20c-7 0-11-8-11-8a18.19 18.19 0 0 1 4.25-5.12"></path><path d="M1 1l22 22"></path><path d="M9.88 9.88a3 3 0 0 0 4.24 4.24"></path><path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path><path d="M16.72 16.72A9.94 9.94 0 0 0 21 12s-4-8-9-8a9.72 9.72 0 0 0-5 .13"></path>`;
+      });
+    });
+
+
+    // --- PHYSICAL EYE TRACKING SYSTEM ---
+    const heroPanel = document.querySelector(".robot-section");
+    const catWrapper = document.getElementById("robotWrapper");
+    const headElement = document.getElementById("catHead");
+    const pupilL = document.getElementById("eyeLeft");
+    const pupilR = document.getElementById("eyeRight");
+
+    let cx = 0, cy = 0;
+    let targetX = 0, targetY = 0;
+    let mouseX = 0, mouseY = 0;
+    let isMouseActive = false;
+    let isTracking = true;
+
+    let heroRect = { width: 0, height: 0, left: 0, top: 0 };
+    let robotWidth = 240;
+    let robotHeight = 270;
+
+    function updateHeroBounds() {
+      heroRect = heroPanel.getBoundingClientRect();
+      const wrapperRect = catWrapper.getBoundingClientRect();
+      robotWidth = wrapperRect.width;
+      robotHeight = wrapperRect.height;
+
+      if (cx === 0 && cy === 0) {
+        cx = heroRect.width / 2;
+        cy = heroRect.height / 2;
+        targetX = cx;
+        targetY = cy;
+      }
+    }
+    updateHeroBounds();
+    window.addEventListener("resize", updateHeroBounds);
+
+    document.addEventListener("mousemove", (e) => {
+      isMouseActive = true;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    document.addEventListener("mouseleave", () => {
+      isMouseActive = false;
+    });
+
+    function animateRobotPhysics() {
+      heroRect = heroPanel.getBoundingClientRect();
+      
+      let localTargetX = heroRect.width / 2;
+      let localTargetY = heroRect.height / 2;
+
+      // Only perform 2D movement when mouse is active and we are not speaking / custom state
+      if (isMouseActive && isTracking) {
+        const mx = mouseX - heroRect.left;
+        const my = mouseY - heroRect.top;
+
+        const dx = mx - cx;
+        const dy = my - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > 80) {
+          localTargetX = mx - (dx / dist) * 80;
+          localTargetY = my - (dy / dist) * 80;
+        } else {
+          localTargetX = cx;
+          localTargetY = cy;
+        }
+      }
+
+      // Keep within bounds
+      const minX = robotWidth / 2 + 5;
+      const maxX = heroRect.width - robotWidth / 2 - 5;
+      const minY = robotHeight / 2 + 5;
+      const maxY = heroRect.height - robotHeight / 2 - 5;
+
+      targetX = Math.max(minX, Math.min(maxX, localTargetX));
+      targetY = Math.max(minY, Math.min(maxY, localTargetY));
+
+      const dx = targetX - cx;
+      const dy = targetY - cy;
+      cx += dx * 0.085;
+      cy += dy * 0.085;
+
+      // Translate wrapper
+      catWrapper.style.transform = `translate(${cx - robotWidth / 2}px, ${cy - robotHeight / 2}px)`;
+
+      // Head and visor eye look tracking
+      if (isTracking && isMouseActive && !robot.classList.contains("focusing-form")) {
+        const headRect = headElement.getBoundingClientRect();
+        const hx = headRect.left + headRect.width / 2;
+        const hy = headRect.top + headRect.height / 2;
+
+        const hdx = mouseX - hx;
+        const hdy = mouseY - hy;
+        const hdist = Math.sqrt(hdx * hdx + hdy * hdy);
+
+        if (hdist > 2) {
+          const factor = Math.min(hdist / 160, 1);
+          const eyeX = (hdx / hdist) * 7 * factor;
+          const eyeY = (hdy / hdist) * 5 * factor;
+
+          pupilL.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
+          pupilR.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
+
+          const headX = (hdx / hdist) * 5 * factor;
+          const headY = (hdy / hdist) * 4 * factor;
+          const headAngle = Math.atan2(hdy, hdx) * (180 / Math.PI);
+          const headRot = Math.max(-6, Math.min(6, headAngle * 0.06));
+
+          headElement.style.transform = `translate(${headX}px, ${headY}px) rotate(${headRot}deg)`;
+        } else {
+          resetHeadLook();
+        }
+      } else if (isTracking && !robot.classList.contains("focusing-form")) {
+        resetHeadLook();
+      }
+
+      requestAnimationFrame(animateRobotPhysics);
+    }
+    requestAnimationFrame(animateRobotPhysics);
+
+    function resetHeadLook() {
+      pupilL.style.transform = "translate(0px, 0px)";
+      pupilR.style.transform = "translate(0px, 0px)";
+      headElement.style.transform = "translate(0px, 0px) rotate(0deg)";
+    }
+
+
+    // --- DIALOGUE TRIGGERS & CELEBRATIONS ---
+    const successBanner = document.getElementById("successBanner");
+    const bannerText = document.getElementById("bannerText");
+    const loginStatusPanel = document.getElementById("loginStatusPanel");
+    const loginStatusText = document.getElementById("loginStatusText");
+
+    let robotStateTimeout = null;
+
+    function clearRobotState() {
+      if (robotStateTimeout) clearTimeout(robotStateTimeout);
+      robot.classList.remove("alert", "happy");
+      isTracking = true;
+      document.getElementById("armRightWave").style.display = "none";
+      document.getElementById("armRight").style.display = "block";
+    }
+
+    function triggerRobotAlert(message) {
+      clearRobotState();
+      playError();
+      robot.classList.add("alert");
+      isTracking = false;
+      resetHeadLook();
+
+      loginStatusText.innerHTML = message;
+      loginStatusPanel.style.display = "flex";
+
+      // Speak the error message
+      speakText(message);
+
+      robotStateTimeout = setTimeout(() => {
+        clearRobotState();
+        loginStatusPanel.style.display = "none";
+      }, 5000);
+    }
+
+    function triggerRobotSuccess(bannerMessage, speakMessages) {
+      clearRobotState();
+      playSuccess();
+      robot.classList.add("happy");
+      isTracking = false;
+      resetHeadLook();
+
+      // Confetti splash
+      triggerConfetti();
+
+      // Slide banner
+      bannerText.innerHTML = bannerMessage;
+      successBanner.classList.add("show");
+
+      // Speaking sequence
+      typeDialogue(speakMessages[0], "statusMessageDummy", 40, () => {
+        setTimeout(() => {
+          typeDialogue(speakMessages[1], "statusMessageDummy", 40, () => {
+            setTimeout(() => {
+              typeDialogue(speakMessages[2], "statusMessageDummy", 40);
+            }, 1000);
+          });
+        }, 1000);
+      });
+
+      robotStateTimeout = setTimeout(() => {
+        clearRobotState();
+        successBanner.classList.remove("show");
+      }, 6000);
+    }
+
+
+    // --- FORM LOGIC & VALIDATIONS ---
+
+    // 1. LOGIN SUBMIT
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById("loginEmail").value.trim();
+      const pass = document.getElementById("loginPassword").value;
+
+      document.getElementById("loginEmailError").style.display = "none";
+      document.getElementById("loginPasswordError").style.display = "none";
+
+      let hasError = false;
+
+      if (email === "") {
+        document.getElementById("loginEmailError").style.display = "flex";
+        hasError = true;
+      }
+      if (pass === "") {
+        document.getElementById("loginPasswordError").style.display = "flex";
+        hasError = true;
+      }
+
+      if (hasError) {
+        triggerRobotAlert("Authentication Failed. Empty input fields.");
+        return;
+      }
+
+      // Check credentials
+      if (email === "admin@ultron.ai" && pass === "123456") {
+        triggerRobotSuccess("Authentication Successful.", [
+          "Authentication Successful.",
+          "Welcome Back Human.",
+          "Thank you for choosing ULTRON."
+        ]);
+        setTimeout(() => {
+          document.getElementById("loginForm").reset();
+        }, 6000);
+      } else {
+        triggerRobotAlert("Authentication Failed. Invalid Email or Password.");
       }
     });
 
-    emailInput.addEventListener("input", () => {
-      emailError.style.display = emailInput.checkValidity() ? "none" : "block";
-    });
+    // 2. SIGNUP SUBMIT
+    document.getElementById("signupForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    passwordInput.addEventListener("input", () => {
-      passwordError.style.display = passwordInput.checkValidity() ? "none" : "block";
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const pass = document.getElementById("signupPassword").value;
+      const confirmPass = document.getElementById("signupConfirmPassword").value;
+
+      document.getElementById("signupNameError").style.display = "none";
+      document.getElementById("signupEmailError").style.display = "none";
+      document.getElementById("signupPasswordError").style.display = "none";
+      document.getElementById("signupConfirmPasswordError").style.display = "none";
+
+      let hasError = false;
+
+      if (name === "") {
+        document.getElementById("signupNameError").style.display = "flex";
+        hasError = true;
+      }
+      if (email === "" || !email.includes("@")) {
+        document.getElementById("signupEmailError").style.display = "flex";
+        hasError = true;
+      }
+      if (pass === "" || pass.length < 8) {
+        document.getElementById("signupPasswordError").style.display = "flex";
+        hasError = true;
+      }
+      if (confirmPass !== pass) {
+        document.getElementById("signupConfirmPasswordError").style.display = "flex";
+        hasError = true;
+      }
+
+      if (hasError) {
+        playError();
+        return;
+      }
+
+      // Successful signup
+      triggerRobotSuccess("Account Created Successfully.", [
+        "Account Created Successfully.",
+        "You are now ready to use ULTRON.",
+        "Please login to continue."
+      ]);
+
+      setTimeout(() => {
+        document.getElementById("signupForm").reset();
+        transitionToScreen("screenLogin", true);
+      }, 5500);
     });
+  </script>
+
+  <!-- Invisible element placeholder to trigger typewriter callback speaker sound engine -->
+  <div id="statusMessageDummy" style="display:none;"></div>
+
+  <!-- Confetti canvas particle engine script -->
+  <script>
+    function triggerConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ["#06b6d4", "#8b5cf6", "#10b981", "#fbbf24", "#ef4444", "#3b82f6"];
+      const particles = [];
+
+      for (let i = 0; i < 150; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 5 + 4,
+          d: Math.random() * canvas.height,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10 - 5,
+          tiltAngleIncremental: Math.random() * 0.08 + 0.03,
+          tiltAngle: 0,
+          speedX: Math.random() * 5 - 2.5,
+          speedY: Math.random() * 6 + 5
+        });
+      }
+
+      let active = true;
+      let frameId;
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let activeParticles = 0;
+
+        particles.forEach((p) => {
+          p.tiltAngle += p.tiltAngleIncremental;
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.tilt = Math.sin(p.tiltAngle) * 12;
+
+          if (p.y < canvas.height + 20) {
+            activeParticles++;
+          }
+
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+          ctx.stroke();
+        });
+
+        if (activeParticles > 0 && active) {
+          frameId = requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(frameId);
+        }
+      }
+
+      draw();
+
+      setTimeout(() => {
+        active = false;
+      }, 5500);
+    }
   </script>
 </body>
 </html>
